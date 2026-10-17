@@ -1,7 +1,4 @@
 
-/* Happy Tails - JavaScript Photo Gallery */
-
-// Store the image paths in an array.
 const imagePaths = [
     "images/gallery-01.jpeg",
     "images/gallery-02.jpeg",
@@ -15,7 +12,6 @@ const imagePaths = [
     "images/gallery-10.jpeg"
 ];
 
-// Captions displayed below the photographs.
 const captionTexts = [
     "A Happy Beginning",
     "A Quiet Moment",
@@ -29,7 +25,6 @@ const captionTexts = [
     "Love and Care"
 ];
 
-// Descriptions displayed when the user hovers over a photograph.
 const descTexts = [
     "A rescued dog enjoys a fresh start in a caring home.",
     "A cat relaxes in a comfortable and peaceful space.",
@@ -43,7 +38,21 @@ const descTexts = [
     "Gentle care and affection help pets feel safe."
 ];
 
-// HTML opening and closing tags required for the gallery.
+// Additional information shown in the information box
+const infoTexts = [
+    "Adopting a rescue dog gives an animal a second chance. With patience, care, and a safe home, rescued dogs can become wonderful companions.",
+    "Cats need a comfortable place where they can rest and feel secure. A calm environment helps them settle into their new home.",
+    "Playtime helps pets stay active and healthy. Always supervise outdoor activities and provide fresh water.",
+    "Cats are curious animals that enjoy exploring safe surroundings. Toys, scratching posts, and play can keep them engaged.",
+    "Some pets form strong friendships with other animals. Introduce new pets slowly and supervise their interactions.",
+    "A peaceful resting place helps pets feel comfortable. Give them a quiet space where they can relax without disturbance.",
+    "Regular walks provide dogs with exercise and opportunities to explore. Use a suitable leash and keep your dog safe.",
+    "Puppies learn about the world through exploration. Gentle training, supervision, and positive reinforcement help them grow.",
+    "Pets need enough rest to stay healthy. Provide a clean, comfortable bed in a safe area of your home.",
+    "Responsible pet care includes nutritious food, clean water, exercise, grooming, and regular veterinary checkups."
+];
+
+// Variables for the HTML tags
 const openList = '<li id="photo';
 const closeList = '</li>';
 
@@ -53,40 +62,75 @@ const closeCaptionTag = '</p>';
 const openDescTag = '<div class="description">';
 const closeDescTag = '</div>';
 
-// Find the gallery list in gallery.html.
+const openInfoHeading = '<h2>';
+const closeInfoHeading = '</h2>';
+
+const openInfoText = '<p>';
+const closeInfoText = '</p>';
+
+const closeLinkText = "Click This To Close";
+
 const galleryList = document.getElementById("gallery-list");
+const infoBox = document.getElementById("info-box");
+const infoHeading = document.getElementById("info-heading");
+const infoText = document.getElementById("info-text");
+const closeInfo = document.getElementById("close-info");
 
-// Generate gallery items using a loop.
-if (galleryList) {
-    for (let i = 0; i < imagePaths.length; i++) {
+// Hide the information box when the page first loads
+infoBox.style.visibility = "hidden";
 
-        // Each list item receives a unique ID: photo1, photo2, etc.
-        const listItem = document.createElement("li");
-        listItem.id = "photo" + (i + 1);
+// Create all gallery images
+for (let i = 0; i < imagePaths.length; i++) {
+    const listItem = document.createElement("li");
+    listItem.id = "photo" + (i + 1);
 
-        // Create the image.
-        const image = document.createElement("img");
-        image.src = imagePaths[i];
-        image.alt = captionTexts[i];
-        image.className = "photo";
-        image.loading = "lazy";
+    const image = document.createElement("img");
+    image.src = imagePaths[i];
+    image.alt = captionTexts[i];
+    image.className = "photo";
+    image.loading = "lazy";
 
-        // Create the caption using captionTexts.
-        const caption = document.createElement("p");
-        caption.className = "caption";
-        caption.textContent = captionTexts[i];
+    const caption = document.createElement("p");
+    caption.className = "caption";
+    caption.textContent = captionTexts[i];
 
-        // Create the description using descTexts.
-        const description = document.createElement("div");
-        description.className = "description";
-        description.textContent = descTexts[i];
+    const description = document.createElement("div");
+    description.className = "description";
+    description.textContent = descTexts[i];
+    description.tabIndex = 0;
 
-        // Add the image, caption, and description to the list item.
-        listItem.appendChild(image);
-        listItem.appendChild(caption);
-        listItem.appendChild(description);
+    // Clicking the description opens the information box
+    function showInformation() {
+        infoHeading.innerHTML =
+            openInfoHeading + captionTexts[i] + closeInfoHeading;
 
-        // Add the completed list item to the gallery.
-        galleryList.appendChild(listItem);
+        infoText.innerHTML =
+            openInfoText + infoTexts[i] + closeInfoText;
+
+        infoBox.style.visibility = "visible";
     }
+
+    description.addEventListener("click", showInformation);
+
+    // Allow keyboard users to open the information box
+    description.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            showInformation();
+        }
+    });
+
+    listItem.appendChild(image);
+    listItem.appendChild(caption);
+    listItem.appendChild(description);
+
+    galleryList.appendChild(listItem);
 }
+
+// Close the information box when the close link is clicked
+closeInfo.textContent = closeLinkText;
+
+closeInfo.addEventListener("click", function (event) {
+    event.preventDefault();
+    infoBox.style.visibility = "hidden";
+});
