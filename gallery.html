@@ -6,36 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery | Happy Tails</title>
     <link rel="stylesheet" href="./styles.css">
-    <script src="gallery.js" defer></script>
+
+    <!-- jQuery library required for the lightbox -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Gallery and lightbox functionality -->
+    <script src="./gallery.js" defer></script>
 </head>
 <body>
 
-    <header>
-        <div class="container">
-            <h1>Happy Tails</h1>
-            <p>Every pet deserves a loving home.</p>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="brand">Happy Tails</a>
 
             <nav aria-label="Main navigation">
                 <a href="index.html">Home</a>
                 <a href="pets.html">Meet Our Pets</a>
-                <a href="gallery.html">Photo Gallery</a>
+                <a href="gallery.html" class="current">Photo Gallery</a>
             </nav>
         </div>
     </header>
 
+
     <main class="container">
         <section class="gallery-section">
             <h2>Our Pet Photo Gallery</h2>
+
             <p>
-                Meet some of our adorable animals. Hover over a photo
-                to read its description, then click the description
-                to learn more.
+                Explore our pet gallery. Hover over a photo to read its
+                description, or click the image to view it larger.
             </p>
 
             <div id="gallery-container">
                 <ul id="gallery-list"></ul>
 
-                <!-- Information box populated by JavaScript -->
+                <!-- Keep this information box if you added it
+                     in the previous assignment. -->
                 <div id="info-box" aria-live="polite">
                     <h2 id="info-heading"></h2>
                     <p id="info-text"></p>
@@ -44,6 +50,19 @@
             </div>
         </section>
     </main>
+
+    <!-- Dark background behind the lightbox -->
+    <div class="backdrop"></div>
+
+    <!-- Lightbox window -->
+    <div class="box" role="dialog" aria-modal="true"
+         aria-label="Enlarged gallery image">
+        <button type="button" class="close" aria-label="Close lightbox">
+            &times;
+        </button>
+
+        <div class="lightbox-content"></div>
+    </div>
 
     <footer>
         <div class="container">
