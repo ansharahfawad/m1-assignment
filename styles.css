@@ -451,3 +451,111 @@ tbody tr:last-child td {
         align-items: flex-start;
     }
 }
+
+
+/* =====================================
+   Photo Gallery - Week 3 Assignment
+   ===================================== */
+
+/* Gallery layout using HTML list elements */
+#gallery-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Each photo is contained in its own list item */
+#gallery-list li {
+    position: relative;
+    min-width: 0;
+    cursor: pointer;
+}
+
+/* All photographs use identical dimensions */
+#gallery-list .photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+/* Caption shown below each photograph */
+#gallery-list .caption {
+    margin: 10px 0 0;
+    color: var(--dark-green);
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+/* Description hidden when the page first loads */
+#gallery-list .description {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 45px;
+
+    padding: 12px;
+    color: var(--white);
+    background: rgba(25, 75, 61, 0.92);
+    border-radius: 8px;
+
+    text-align: center;
+    font-size: 0.9rem;
+    line-height: 1.5;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Hover effect on the photo's list item */
+#gallery-list li:hover {
+    cursor: pointer;
+}
+
+/* Reveal the description when the user hovers over a photo */
+#gallery-list li:hover .description {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Keyboard accessibility: reveal the description on focus too */
+#gallery-list li:focus-within .description {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Tablet layout */
+@media (max-width: 900px) {
+    #gallery-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobile layout */
+@media (max-width: 500px) {
+    #gallery-list {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    #gallery-list .photo {
+        aspect-ratio: 4 / 3;
+    }
+
+    #gallery-list .description {
+        left: 8px;
+        right: 8px;
+        bottom: 45px;
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+}
