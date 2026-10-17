@@ -703,3 +703,100 @@ tbody tr:last-child td {
         font-size: 0.9rem;
     }
 }
+
+
+/* =========================================
+   JQUERY LIGHTBOX
+   ========================================= */
+
+/* Dark background behind the lightbox */
+.backdrop {
+    z-index: 1000;
+    opacity: 0;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+}
+
+/* Lightbox window */
+.box {
+    z-index: 1001;
+    position: fixed;
+    display: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(700px, 90vw);
+    max-height: 90vh;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 24px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 15px #222;
+}
+
+/* Close X button */
+.close {
+    position: sticky;
+    top: 0;
+    float: right;
+    z-index: 2;
+    margin: -12px -10px 8px 12px;
+    padding: 2px 8px;
+    border: none;
+    border-radius: 4px;
+    background: #fff;
+    color: #222;
+    font-size: 28px;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+/* Container for the enlarged image */
+.lightbox-content {
+    clear: both;
+    width: 100%;
+}
+
+.lightbox-content img {
+    display: block;
+    width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+/* Make gallery images clickable */
+#gallery-list .lightbox-toggle {
+    display: block;
+    cursor: zoom-in;
+}
+
+#gallery-list .lightbox-toggle img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+/* Responsive lightbox for mobile */
+@media (max-width: 600px) {
+    .box {
+        width: 94vw;
+        max-height: 88vh;
+        padding: 15px;
+    }
+
+    .lightbox-content img {
+        max-height: 72vh;
+    }
+
+    .close {
+        font-size: 25px;
+    }
+}
