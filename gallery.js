@@ -3,16 +3,16 @@
 
 // Store the image paths in an array.
 const imagePaths = [
-    "images/gallery-01.jpg",
-    "images/gallery-02.jpg",
-    "images/gallery-03.jpg",
-    "images/gallery-04.jpg",
-    "images/gallery-05.jpg",
-    "images/gallery-06.jpg",
-    "images/gallery-07.jpg",
-    "images/gallery-08.jpg",
-    "images/gallery-09.jpg",
-    "images/gallery-10.jpg"
+    "images/gallery-01.jpeg",
+    "images/gallery-02.jpeg",
+    "images/gallery-03.jpeg",
+    "images/gallery-04.jpeg",
+    "images/gallery-05.jpeg",
+    "images/gallery-06.jpeg",
+    "images/gallery-07.jpeg",
+    "images/gallery-08.jpeg",
+    "images/gallery-09.jpeg",
+    "images/gallery-10.jpeg"
 ];
 
 // Captions displayed below the photographs.
