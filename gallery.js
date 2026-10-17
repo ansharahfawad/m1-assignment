@@ -38,37 +38,18 @@ const descTexts = [
     "Gentle care and affection help pets feel safe."
 ];
 
-// Additional information shown in the information box
 const infoTexts = [
     "Adopting a rescue dog gives an animal a second chance. With patience, care, and a safe home, rescued dogs can become wonderful companions.",
-    "Cats need a comfortable place where they can rest and feel secure. A calm environment helps them settle into their new home.",
-    "Playtime helps pets stay active and healthy. Always supervise outdoor activities and provide fresh water.",
-    "Cats are curious animals that enjoy exploring safe surroundings. Toys, scratching posts, and play can keep them engaged.",
-    "Some pets form strong friendships with other animals. Introduce new pets slowly and supervise their interactions.",
-    "A peaceful resting place helps pets feel comfortable. Give them a quiet space where they can relax without disturbance.",
-    "Regular walks provide dogs with exercise and opportunities to explore. Use a suitable leash and keep your dog safe.",
-    "Puppies learn about the world through exploration. Gentle training, supervision, and positive reinforcement help them grow.",
-    "Pets need enough rest to stay healthy. Provide a clean, comfortable bed in a safe area of your home.",
-    "Responsible pet care includes nutritious food, clean water, exercise, grooming, and regular veterinary checkups."
+    "Cats need a comfortable place where they can rest and feel secure.",
+    "Playtime helps pets stay active and healthy. Always supervise outdoor activities.",
+    "Cats are curious animals that enjoy exploring safe surroundings.",
+    "Introduce pets slowly and supervise their interactions to help them get along.",
+    "A peaceful resting place helps pets feel comfortable and secure.",
+    "Regular walks provide dogs with exercise and opportunities to explore.",
+    "Gentle training, supervision, and positive reinforcement help puppies grow.",
+    "Pets need enough rest to stay healthy. Provide a clean, comfortable bed.",
+    "Responsible pet care includes nutritious food, clean water, exercise, grooming, and veterinary checkups."
 ];
-
-// Variables for the HTML tags
-const openList = '<li id="photo';
-const closeList = '</li>';
-
-const openCaptionTag = '<p class="caption">';
-const closeCaptionTag = '</p>';
-
-const openDescTag = '<div class="description">';
-const closeDescTag = '</div>';
-
-const openInfoHeading = '<h2>';
-const closeInfoHeading = '</h2>';
-
-const openInfoText = '<p>';
-const closeInfoText = '</p>';
-
-const closeLinkText = "Click This To Close";
 
 const galleryList = document.getElementById("gallery-list");
 const infoBox = document.getElementById("info-box");
@@ -76,19 +57,30 @@ const infoHeading = document.getElementById("info-heading");
 const infoText = document.getElementById("info-text");
 const closeInfo = document.getElementById("close-info");
 
-// Hide the information box when the page first loads
-infoBox.style.visibility = "hidden";
+// Hide the previous assignment's information box initially.
+if (infoBox) {
+    infoBox.style.visibility = "hidden";
+}
 
-// Create all gallery images
+// Create the gallery images, captions, and hover descriptions.
 for (let i = 0; i < imagePaths.length; i++) {
     const listItem = document.createElement("li");
     listItem.id = "photo" + (i + 1);
+
+    // The image is inside a link so it can be selected
+    // independently from the hover description.
+    const imageLink = document.createElement("a");
+    imageLink.href = "#";
+    imageLink.className = "lightbox-toggle";
+    imageLink.setAttribute("aria-label", "Enlarge " + captionTexts[i]);
 
     const image = document.createElement("img");
     image.src = imagePaths[i];
     image.alt = captionTexts[i];
     image.className = "photo";
     image.loading = "lazy";
+
+    imageLink.appendChild(image);
 
     const caption = document.createElement("p");
     caption.className = "caption";
@@ -99,20 +91,18 @@ for (let i = 0; i < imagePaths.length; i++) {
     description.textContent = descTexts[i];
     description.tabIndex = 0;
 
-    // Clicking the description opens the information box
+    // Keep the previous assignment's information box behavior.
+    // Clicking the description does not open the lightbox.
     function showInformation() {
-        infoHeading.innerHTML =
-            openInfoHeading + captionTexts[i] + closeInfoHeading;
+        if (!infoBox) return;
 
-        infoText.innerHTML =
-            openInfoText + infoTexts[i] + closeInfoText;
-
+        infoHeading.textContent = captionTexts[i];
+        infoText.textContent = infoTexts[i];
         infoBox.style.visibility = "visible";
     }
 
     description.addEventListener("click", showInformation);
 
-    // Allow keyboard users to open the information box
     description.addEventListener("keydown", function (event) {
         if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
@@ -120,17 +110,76 @@ for (let i = 0; i < imagePaths.length; i++) {
         }
     });
 
-    listItem.appendChild(image);
+    listItem.appendChild(imageLink);
     listItem.appendChild(caption);
     listItem.appendChild(description);
 
     galleryList.appendChild(listItem);
 }
 
-// Close the information box when the close link is clicked
-closeInfo.textContent = closeLinkText;
+// Close the previous information box.
+if (closeInfo && infoBox) {
+    closeInfo.addEventListener("click", function (event) {
+        event.preventDefault();
+        infoBox.style.visibility = "hidden";
+    });
+}
 
-closeInfo.addEventListener("click", function (event) {
-    event.preventDefault();
-    infoBox.style.visibility = "hidden";
+// --------------------------------------------------
+// jQuery LIGHTBOX
+// This feature opens when the IMAGE is clicked.
+// It does not use the description's click event.
+// --------------------------------------------------
+
+$(document).ready(function () {
+
+    // Open the lightbox when a gallery image is clicked.
+    $(document).on("click", ".lightbox-toggle img", function (event) {
+        event.preventDefault();
+
+        // Remove any image from the previous lightbox opening.
+        $(".lightbox-content").empty();
+
+        // Clone the clicked image and place it in the lightbox.
+        const enlargedImage = $(this).clone();
+
+        enlargedImage.removeAttr("loading");
+        enlargedImage.attr("alt", $(this).attr("alt"));
+
+        $(".lightbox-content").append(enlargedImage);
+
+        // Show the dark backdrop and lightbox window.
+        $(".backdrop")
+            .stop(true, true)
+            .css("display", "block")
+            .animate({ opacity: 0.65 }, 300);
+
+        $(".box")
+            .stop(true, true)
+            .fadeIn(300);
+    });
+
+    // Close when the X button or dark backdrop is clicked.
+    $(".close, .backdrop").on("click", function () {
+        closeLightbox();
+    });
+
+    // Also allow the user to close the lightbox with Escape.
+    $(document).on("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeLightbox();
+        }
+    });
+
+    function closeLightbox() {
+        $(".box").stop(true, true).fadeOut(200);
+
+        $(".backdrop")
+            .stop(true, true)
+            .animate({ opacity: 0 }, 200, function () {
+                $(this).css("display", "none");
+            });
+
+        $(".lightbox-content").empty();
+    }
 });
